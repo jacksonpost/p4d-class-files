@@ -36,33 +36,41 @@ function setup() {
     background(0);
     noFill();
 
-    console.log("Checking window height:" + windowHeight);
+    console.log("window height:" + windowHeight);
+
+    noLoop();
 }
   
 function draw() {
+    // semi-opaque
     // background(0, 10);
     
-    curve += random(-1, 1);
+    background(0);
 
-    pulse1 = sin( frameCount / curve );
-    pulse2 = cos( frameCount / curve );
-    pulse3 = tan( frameCount / curve );
+    for(i=0; i<1080; i++){
+        curve += random(-1, 1);
 
-    oldX = xPos;
-    oldY = yPos;
-    xPos = moveX(xPos, pulse2 * speed );
-    yPos = moveY(yPos, pulse1 * speed );
-
-    strokeWeight(10);
-    let lightPulse = lightness(mainColor) + ( sin(radians(frameCount%360)) * (100-lightness(mainColor)) );
-    stroke(hue(mainColor), saturation(mainColor), lightPulse);
-    ellipse(hw,hh,(hh+(lightPulse*pulse1)));
-    stroke(mainColor);
-
-    if( shortEnough(oldX, oldY, xPos, yPos) ){
-        strokeWeight(10*(pulse1+pulse2));
-        line(oldX, oldY, xPos, yPos);
+        pulse1 = sin( i / curve );
+        pulse2 = cos( i / curve );
+        pulse3 = tan( i / curve );
+    
+        oldX = xPos;
+        oldY = yPos;
+        xPos = moveX(xPos, pulse2 * speed );
+        yPos = moveY(yPos, pulse1 * speed );
+    
+        strokeWeight(10);
+        let lightPulse = lightness(mainColor) + ( sin(radians(i%360)) * (100-lightness(mainColor)) );
+        stroke(hue(mainColor), saturation(mainColor), lightPulse);
+        ellipse(hw,hh,(hh+(lightPulse*pulse1)));
+        stroke(mainColor);
+    
+        if( shortEnough(oldX, oldY, xPos, yPos) ){
+            strokeWeight(10*(pulse1+pulse2));
+            line(oldX, oldY, xPos, yPos);
+        }
     }
+   
 
     strokeWeight(2);
     // circle(xPos, yPos, 20*pulse3);
@@ -70,12 +78,6 @@ function draw() {
     
     textSize(36);
     text('LOGO', 10, 50);
-    // drawSquare(50,50,50);
-}
-
-
-function drawSquare( x, y, w){
-    rect(x, y, w, w);
 }
 
 function moveX(x, v){
@@ -100,6 +102,7 @@ function moveY(y, v){
     return y;
 }
 
+// avoid drawing lines across the canvas when exceeding margins
 function shortEnough(x1, y1, x2, y2){
     // calc distance
     let l1 = abs(x1-x2);
