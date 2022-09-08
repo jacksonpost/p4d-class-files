@@ -6,6 +6,7 @@
 // see: https://www.w3schools.com/js/js_scope.asp
 
 var shoppingList = ["milk", "eggs", "sugar", "flour"];
+var myArray = [];
 var xPos = 0;
 var hw, hh, circ;
 
@@ -34,6 +35,10 @@ function setup() {
   for(i=0; i<width; i++){
     shoppingList[i] = abs(sin(i))*i;
   }
+
+  for(i=0; i<width; i++){
+    myArray[i] = i;
+  }
   // console.log(myArray);
 
   // noStroke();
@@ -45,8 +50,16 @@ function draw() {
 
   background(255);
   strokeWeight(1);
+  
+  for(i=0; i<width; i++){
+    myArray[i] += sin(i);
+    ellipse(i, myArray[i], 1, 1);
+  }
+
   fill(xPos % 255);
   
+
+
   textSize(32);
   // text(shoppingList.length,40,40);
   // for(i = 0; i < shoppingList.length; i++){
@@ -63,10 +76,12 @@ function draw() {
   let speed = 1;
   rect(shoppingList[frameCount % shoppingList.length], hh, 50, 50);
 
-  // translate(hw, hh);
-  // rotate(frameCount % 360);
-  // rect(0, 0, frameCount % height, frameCount % height);
-  // resetMatrix();
+  // start matrix transformations
+    translate(hw, hh);
+    rotate(frameCount % 360);
+    rect(0, 0, frameCount % height, frameCount % height);
+  // reset the matrix to defaults
+    resetMatrix();
 
   rect(frameCount%width, 5, 10, 10);
   rect(frameCount%width, height-5, 10, 10);
